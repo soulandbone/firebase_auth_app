@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -10,10 +11,21 @@ class LoginPage extends StatelessWidget {
 
   LoginPage({required this.onTap, super.key});
 
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void signUserIn() {}
+  void signUserIn() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email');
+      } else if (e.code == 'wrong password') {
+        print('Wrong password');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +50,7 @@ class LoginPage extends StatelessWidget {
               const Gap(25),
               MyTextField(
                   hintText: 'Username',
-                  controller: usernameController,
+                  controller: emailController,
                   obscuredText: false),
               const Gap(10),
               MyTextField(

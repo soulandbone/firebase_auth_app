@@ -16,7 +16,7 @@ class _LoginOrSignUpState extends State<LoginOrSignUp> {
     });
   }
 
-  bool isLogin = false;
+  bool isLogin = true;
 
   @override
   Widget build(BuildContext context) {
