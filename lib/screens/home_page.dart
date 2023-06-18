@@ -14,8 +14,9 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(backgroundColor: Colors.amber, actions: [
         TextButton(onPressed: signOut, child: const Icon(Icons.logout))
       ]),
-      body: const Center(
-        child: Text('you are authenticated'),
+      body: Center(
+        child: Text(
+            'you are authenticated as ${FirebaseAuth.instance.currentUser!.email}'),
       ),
     );
   }
