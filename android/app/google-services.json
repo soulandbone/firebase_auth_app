@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "436978458949",
+    "project_id": "authtrainingapp",
+    "storage_bucket": "authtrainingapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436978458949:android:b8adb583a966118f2cde2c",
+        "android_client_info": {
+          "package_name": "com.example.firebase_auth_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "436978458949-k98fhoflirsf4t8h2tm9h4o26om4pbpg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAI8LF9VK1WkOSihdW8dDrLLsXBoR8C27E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "436978458949-k98fhoflirsf4t8h2tm9h4o26om4pbpg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
