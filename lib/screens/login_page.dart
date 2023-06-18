@@ -49,7 +49,7 @@ class LoginPage extends StatelessWidget {
               ),
               const Gap(25),
               MyTextField(
-                  hintText: 'Username',
+                  hintText: 'Email',
                   controller: emailController,
                   obscuredText: false),
               const Gap(10),
