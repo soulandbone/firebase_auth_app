@@ -7,6 +7,7 @@ import '../widgets/my_text_field.dart';
 import '../widgets/square_tile.dart';
 
 class LoginPage extends StatelessWidget {
+  // check what happens with the signUserIn function if I transform this into a StatefulWidget as MitchKoko does in his video. Because Right now I get this under curve line that says dont use BuildContext over async gaps.
   Function()? onTap;
 
   LoginPage({required this.onTap, super.key});
@@ -14,7 +15,13 @@ class LoginPage extends StatelessWidget {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void signUserIn() async {
+  void signUserIn(BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (context) => const Center(
+              child: CircularProgressIndicator(),
+            ));
+
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
@@ -25,6 +32,7 @@ class LoginPage extends StatelessWidget {
         print('Wrong password');
       }
     }
+    Navigator.pop(context);
   }
 
   @override
@@ -70,7 +78,7 @@ class LoginPage extends StatelessWidget {
               ),
               const Gap(20),
               MyButton(
-                onTap: signUserIn,
+                onTap: () => signUserIn(context),
                 text: 'Login',
               ),
               const Gap(20),
