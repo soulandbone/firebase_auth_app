@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -6,14 +7,44 @@ import '../widgets/my_text_field.dart';
 import '../widgets/square_tile.dart';
 
 class SignUpPage extends StatelessWidget {
+  //this was done with Stateless widget to test what was the difference of doing it with a Stateful widget
   Function()? onTap;
   SignUpPage({required this.onTap, super.key});
 
-  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
-  void signUserUp() {}
+  void showErrorMessage(String message, BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(title: Text(message));
+        });
+  }
+
+  void signUserUp(BuildContext context) async {
+    final navigator = Navigator.of(context);
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(child: CircularProgressIndicator());
+        });
+    if (passwordController.text == confirmPasswordController.text) {
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: emailController.text, password: passwordController.text);
+        navigator.pop();
+      } on FirebaseAuthException catch (e) {
+        navigator.pop();
+        print(e.code);
+      }
+    } else {
+      navigator.pop();
+      showErrorMessage('Passwords dont match', context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +70,7 @@ class SignUpPage extends StatelessWidget {
               const Gap(25),
               MyTextField(
                   hintText: 'Username',
-                  controller: usernameController,
+                  controller: emailController,
                   obscuredText: false),
               const Gap(10),
               MyTextField(
@@ -64,7 +95,7 @@ class SignUpPage extends StatelessWidget {
               ),
               const Gap(20),
               MyButton(
-                onTap: signUserUp,
+                onTap: () => signUserUp(context),
                 text: 'Sign up',
               ),
               const Gap(20),
