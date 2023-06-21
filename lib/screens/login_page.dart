@@ -6,16 +6,31 @@ import '../widgets/my_button.dart';
 import '../widgets/my_text_field.dart';
 import '../widgets/square_tile.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   // check what happens with the signUserIn function if I transform this into a StatefulWidget as MitchKoko does in his video. Because Right now I get this under curve line that says dont use BuildContext over async gaps.
   Function()? onTap;
 
   LoginPage({required this.onTap, super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
 
-  void signUserIn(BuildContext context) async {
+  void showErrorMessage(String message) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(title: Text(message));
+        });
+  }
+
+  void signUserIn() async {
+    final navigator = Navigator.of(context);
     showDialog(
         context: context,
         builder: (context) => const Center(
@@ -25,14 +40,13 @@ class LoginPage extends StatelessWidget {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
+
+      navigator.pop();
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email');
-      } else if (e.code == 'wrong password') {
-        print('Wrong password');
-      }
+      // to avoid AsyncGaps issues
+      navigator.pop();
+      showErrorMessage(e.code);
     }
-    Navigator.pop(context);
   }
 
   @override
@@ -78,7 +92,7 @@ class LoginPage extends StatelessWidget {
               ),
               const Gap(20),
               MyButton(
-                onTap: () => signUserIn(context),
+                onTap: () => signUserIn(),
                 text: 'Login',
               ),
               const Gap(20),
@@ -116,7 +130,7 @@ class LoginPage extends StatelessWidget {
                   const Text('Not a member?'),
                   const Gap(8),
                   GestureDetector(
-                    onTap: onTap,
+                    onTap: widget.onTap,
                     child: const Text(
                       'Register now',
                       style: TextStyle(
